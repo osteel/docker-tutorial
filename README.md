@@ -22,11 +22,9 @@ Get the Docker Machine IP:
 
 Access it from your browser.
 
-phpMyAdmin is available on port 8080.
-
 ## Description
 
-The different containers are described in `docker-compose.yml`.
+The different containers are described in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/master/docker-compose.yml).
 
 There are 6 of them:
 
@@ -39,6 +37,16 @@ There are 6 of them:
 
 All of them are using official images.
 
+When building and starting containers for the first time with Docker Compose, a database named `project` will be created by default. You can change this in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/master/docker-compose.yml).
+
+A [default Nginx configuration](https://github.com/osteel/docker-tutorial/blob/master/nginx/default.conf) is also copied over.
+
+The current directory is mounted into the one served by Nginx on the container, so any update to the code is available without having to rebuild the container.
+
+The MySQL data sits in its own directory mounted into its own container to make it persistent.
+
 The application is available on the port 80 of the host machine.
+
+phpMyAdmin is available on port 8080.
 
 Again, for the complete tutorial please head to the [original post](http://blog.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development").
