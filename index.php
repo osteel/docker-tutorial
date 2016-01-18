@@ -5,7 +5,7 @@
         <title>Hello World!</title>
     </head>
     <body>
-        <img src="http://blog.osteel.me/images/2015/12/18/docker-tutorial3.gif" alt="Hello World!" />
+        <img src="http://blog.osteel.me/images/2015/12/18/docker-tutorial2.gif" alt="Hello World!" />
         <?php
         $database   = $user = $password = "project";
         $host       = "mysql";
