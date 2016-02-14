@@ -41,7 +41,7 @@ data:
 phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-        - 8080:8080
+        - 8080:80
     links:
         - mysql
     environment:
