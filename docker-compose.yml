@@ -19,7 +19,7 @@ php:
 app:
     image: php:7.0-fpm
     volumes:
-        - .:/var/www/html
+        - ./www/html:/var/www/html
     command: "true"
 
 mysql:
