@@ -22,6 +22,12 @@ Get the Docker Machine IP:
 
 Access it from your browser.
 
+Or using "make" command to run the same commands above:
+
+    $ make dockerup
+    $ make dockerip
+
+
 ## Description
 
 The different containers are described in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/master/docker-compose.yml).
