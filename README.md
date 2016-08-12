@@ -22,7 +22,7 @@ Get the Docker Machine IP:
 
 Access it from your browser.
 
-Or using "make" command to run the same commands above:
+Or use "make" command to run the same two commands above:
 
     $ make dockerup
     $ make dockerip
