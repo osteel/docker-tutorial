@@ -1,6 +1,6 @@
 # Docker tutorial
 
-This repository comes with the blog article [From Vagrant to Docker: How to use Docker for local web development](http://blog.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development"). Please refer to it for a full explanation.
+This repository comes with the blog article [From Vagrant to Docker: How to use Docker for local web development](http://tech.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development"). Please refer to it for a full explanation.
 
 It contains a basic LEMP stack running with Docker, intented to be used for local web development.
 
@@ -49,4 +49,4 @@ The application is available on the port 80 of the host machine.
 
 phpMyAdmin is available on port 8080.
 
-Again, for the complete tutorial please head to the [original post](http://blog.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development").
+Again, for the complete tutorial please head to the [original post](http://tech.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development").
