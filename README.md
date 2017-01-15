@@ -1,6 +1,8 @@
+**[WARNING] This repository is deprecated and only maintained for legacy purposes. For an up to date Docker set up, please head over [here](https://github.com/osteel/docker-tutorial-2), thank you.**
+
 # Docker tutorial
 
-This repository comes with the blog article [From Vagrant to Docker: How to use Docker for local web development](http://tech.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development"). Please refer to it for a full explanation.
+This is the companion repository for [From Vagrant to Docker: How to use Docker for local web development](http://tech.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html "From Vagrant to Docker: How to use Docker for local web development"). Please refer to it for a full explanation.
 
 It contains a basic LEMP stack running with Docker, intented to be used for local web development.
 
@@ -41,7 +43,7 @@ When building and starting containers for the first time with Docker Compose, a 
 
 A [default Nginx configuration](https://github.com/osteel/docker-tutorial/blob/master/nginx/default.conf) is also copied over.
 
-The current directory is mounted into the one served by Nginx on the container, so any update to the code is available without having to rebuild the container.
+The `www/html/` directory is mounted into the one served by Nginx on the container, so any update to the code is available without having to rebuild the container.
 
 The MySQL data sits in its own directory mounted into its own container to make it persistent.
 
