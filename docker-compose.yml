@@ -1,48 +1,49 @@
-nginx:
-    build: ./nginx/
+version: '3.7'
+
+# Services
+services:
+
+  # Nginx Service
+  nginx:
+    image: nginx:1.17
     ports:
-        - 80:80
-    links:
-        - php
-    volumes_from:
-        - app
-
-php:
-    build: ./php/
-    expose:
-        - 9000
-    links:
-        - mysql
-    volumes_from:
-        - app
-
-app:
-    image: php:7.0-fpm
+      - 80:80
     volumes:
-        - ./www/html:/var/www/html
-    command: "true"
+      - ./src:/var/www/php:ro
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - php
 
-mysql:
-    image: mysql:latest
-    volumes_from:
-        - data
+  # PHP Service
+  php:
+    build: ./.docker/php
+    working_dir: /var/www/php
+    volumes:
+      - ./src:/var/www/php
+    depends_on:
+      - mysql
+
+  # MySQL Service
+  mysql:
+    image: mysql:8
     environment:
-        MYSQL_ROOT_PASSWORD: secret
-        MYSQL_DATABASE: project
-        MYSQL_USER: project
-        MYSQL_PASSWORD: project
-
-data:
-    image: mysql:latest
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
     volumes:
-        - /var/lib/mysql
-    command: "true"
+      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - mysqldata:/var/lib/mysql
 
-phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+  # PhpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
     ports:
-        - 8080:80
-    links:
-        - mysql
+      - 8080:80
     environment:
-        PMA_HOST: mysql
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+
+# Volumes
+volumes:
+
+  mysqldata:
