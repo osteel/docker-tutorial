@@ -2,7 +2,7 @@
 
 This repository accompanies a [tutorial series](https://tech.osteel.me/posts/docker-for-local-web-development-why-should-you-care "Docker for local web development, introduction: why should you care?") about leveraging Docker for local web development.
 
-The current branch covers part 1 of the series - please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-1-a-basic-lemp-stack "Docker for local web development, part 1: a basic LEMP stack") for a detailed explanation.
+The current branch covers part 1 of the series, which is about setting up a basic LEMP stack with Docker Compose. Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-1-a-basic-lemp-stack "Docker for local web development, part 1: a basic LEMP stack") for a detailed explanation.
 
 ## Content
 
@@ -55,15 +55,15 @@ Once the script is done, visit [php.test](http://php.test) (you might initially 
 
 The images used by the setup are listed and configured in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/part-1/docker-compose.yml).
 
-When building and starting the containers based off the images for the first time, a MySQL database named `demo` is automatically created (you can pick a different name in the MySQL service's description in `docker-compose.yml`).
+When building and starting the containers based on the images for the first time, a MySQL database named `demo` is automatically created (you can pick a different name in the MySQL service's description in `docker-compose.yml`).
 
 A [minimalist Nginx configuration](https://github.com/osteel/docker-tutorial/blob/part-1/.docker/nginx/conf.d/php.conf) for the PHP application is also copied over to Nginx's container, making it available at [php.test](http://php.test).
 
 The `src/` directory containing the application is mounted onto both Nginx's and the application's containers, meaning any update to the code is immediately available upon refreshing the page, without having to rebuild any container.
 
-The database data is persisted in its own local directory through the volume `mysqldata`, which is mounted onto MySQL's container. A phpMyAdmin interface is available at [localhost:8080](http://localhost:8080).
+The database data is persisted in its own local directory through the volume `mysqldata`, which is mounted onto MySQL's container. A phpMyAdmin interface is available at [localhost:8080](http://localhost:8080) (the database credentials are root / root).
 
-Please head over to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-1-a-basic-lemp-stack "Docker for local web development, part 1: a basic LEMP stack") for a detailed explanation.
+Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-1-a-basic-lemp-stack "Docker for local web development, part 1: a basic LEMP stack") for a detailed explanation.
 
 ## Cleaning up
 
