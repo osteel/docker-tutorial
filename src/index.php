@@ -18,7 +18,7 @@
         </style>
     </head>
     <body>
-        <img src="hello.gif" alt="Hello there" class="center">
+        <img src="https://tech.osteel.me/images/2020/03/05/hello.gif" alt="Hello there" class="center">
         <?php
         $connection = new PDO('mysql:host=mysql;dbname=demo;charset=utf8', 'root', 'root');
         $query      = $connection->query("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'demo'");
