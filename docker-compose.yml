@@ -9,7 +9,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./src/backend:/var/www/backend:ro,cached
+      - ./src/backend/src:/var/www/backend:ro,cached
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
       - phpmyadmindata:/usr/src/phpmyadmin:cached
     depends_on:
@@ -21,7 +21,7 @@ services:
     build: ./src/backend
     working_dir: /var/www/backend
     volumes:
-      - ./src/backend:/var/www/backend:cached
+      - ./src/backend/src:/var/www/backend:cached
     depends_on:
       - mysql
 
