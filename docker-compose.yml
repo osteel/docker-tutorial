@@ -25,6 +25,14 @@ services:
     depends_on:
       - mysql
 
+  # Frontend Service
+  frontend:
+    build: ./src/frontend
+    working_dir: /var/www/frontend
+    volumes:
+      - ./src/frontend/src:/var/www/frontend:cached
+      - ./.docker/client/vue.config.js:/var/www/vue.config.js:ro
+
   # MySQL Service
   mysql:
     image: mysql:8
