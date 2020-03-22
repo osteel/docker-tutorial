@@ -9,11 +9,12 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./src/backend/src:/var/www/backend:ro,cached
+      - ./src/backend:/var/www/backend:ro,delegated
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      - phpmyadmindata:/usr/src/phpmyadmin:cached
+      - phpmyadmindata:/usr/src/phpmyadmin:delegated
     depends_on:
       - backend
+      - frontend
       - phpmyadmin
 
   # Backend Service
@@ -21,7 +22,7 @@ services:
     build: ./src/backend
     working_dir: /var/www/backend
     volumes:
-      - ./src/backend/src:/var/www/backend:cached
+      - ./src/backend:/var/www/backend:delegated
     depends_on:
       - mysql
 
@@ -30,8 +31,10 @@ services:
     build: ./src/frontend
     working_dir: /var/www/frontend
     volumes:
-      - ./src/frontend/src:/var/www/frontend:cached
+      - ./src/frontend:/var/www/frontend:delegated
       - ./.docker/client/vue.config.js:/var/www/vue.config.js:ro
+    depends_on:
+      - backend
 
   # MySQL Service
   mysql:
@@ -41,7 +44,7 @@ services:
       MYSQL_DATABASE: demo
     volumes:
       - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - mysqldata:/var/lib/mysql:cached
+      - mysqldata:/var/lib/mysql:delegated
 
   # PhpMyAdmin Service
   phpmyadmin:
@@ -49,7 +52,7 @@ services:
     environment:
       PMA_HOST: mysql
     volumes:
-      - phpmyadmindata:/usr/src/phpmyadmin:cached
+      - phpmyadmindata:/usr/src/phpmyadmin:delegated
     depends_on:
       - mysql
 

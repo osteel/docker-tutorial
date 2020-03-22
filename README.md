@@ -11,8 +11,8 @@ This branch contains a [three-tier architecture](https://www.techopedia.com/defi
 It includes:
 
 * A container for Nginx;
-* A container for the backend application ([Laravel](https://laravel.com/));
-* A container for the frontend application ([VueJS](https://vuejs.org/));
+* A container for the backend application (based on [Laravel](https://laravel.com/));
+* A container for the frontend application (based on [Vue.js](https://vuejs.org/));
 * A container for MySQL;
 * A container for phpMyAdmin;
 * A volume to persist MySQL data.
@@ -40,7 +40,7 @@ $ git clone git@github.com:osteel/docker-tutorial.git
 $ cd docker-tutorial
 ```
 
-Copy `.env.example` to `.env`, **both at the root of the project and also in `src/backend/src`**:
+Copy `.env.example` to `.env`, **both at the root of the project and in `src/backend`**:
 
 ```
 $ cp .env.example .env
@@ -82,11 +82,11 @@ The images used by the setup are listed and configured in [`docker-compose.yml`]
 
 When building and starting the containers based on the images for the first time, a MySQL database named `demo` is automatically created (you can pick a different name in the MySQL service's description in `docker-compose.yml`).
 
-Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-3/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-3/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-3/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at, [backend.demo.test](http://backend.demo.test), [frontend.demo.test](http://frontend.demo.test) and [phpmyadmin.test](http://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
+Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-3/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-3/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-3/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](http://backend.demo.test), [frontend.demo.test](http://frontend.demo.test) and [phpmyadmin.test](http://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
 
-The `src/` directory containing the backend and frontend applications is mounted onto both Nginx's and the applications' containers, meaning any update to the code is immediately available upon refreshing the page, without having to rebuild any container.
+The directories containing the backend and frontend applications are mounted onto both Nginx's and the applications' containers, meaning any update to the code is immediately available upon refreshing the page, without having to rebuild any container.
 
-Moreover, the VueJS development server is automatically started, meaning you can update the code and benefit from _hot-reload_ straight away.
+Moreover, the Vue.js development server is automatically started, meaning you can update the code and benefit from _hot-reload_ straight away.
 
 The frontend application is consuming a simple endpoint from the backend application to fetch and display the text below the animated gif.
 
