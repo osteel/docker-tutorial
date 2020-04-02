@@ -23,6 +23,7 @@ services:
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend:delegated
+      - ./.docker/backend/init:/opt/files/init:delegated,ro
     depends_on:
       - mysql
 
@@ -32,7 +33,6 @@ services:
     working_dir: /var/www/frontend
     volumes:
       - ./src/frontend:/var/www/frontend:delegated
-      - ./.docker/client/vue.config.js:/var/www/vue.config.js:ro
     depends_on:
       - backend
 

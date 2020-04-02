@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Install Composer dependencies
+composer install -d "/var/www/backend"
+
+# Deal with the .env file if necessary
+if [ ! -f "/var/www/backend/.env" ]; then
+    # Create .env file
+    cat > "/var/www/backend/.env" << EOF
+APP_NAME=demo
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://backend.demo.test
+
+LOG_CHANNEL=single
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=demo
+DB_USERNAME=root
+DB_PASSWORD=root
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+EOF
+
+    # Generate application key
+    php "/var/www/backend/artisan" key:generate --ansi
+fi
+
+# Make sure the MySQL database is available
+echo 'Waiting for MySQL to be available'
+count=1
+while [ $count -le 10 ] && ! mysql -uroot -proot -hmysql -P3306 -e 'exit' ; do
+    sleep 5
+    ((count++))
+done
+if [ "$count" -ge 10 ]; then
+    echo >&2 'error: failed to connect to MySQL after 10 attempts'
+    exit 1
+fi
+echo 'MySQL connection successful!'
+
+# Database
+php "/var/www/backend/artisan" migrate

@@ -1,0 +1,156 @@
+#!/bin/bash
+
+
+#######################################
+# FUNCTIONS
+#######################################
+
+# Run an Artisan command
+artisan () {
+    docker-compose run --rm backend php artisan "${@:1}"
+}
+
+# Build all of the images or the specified one
+build () {
+    docker-compose build "${@:1}"
+}
+
+# Run a Composer command
+composer () {
+    docker-compose run --rm backend composer "${@:1}"
+}
+
+# Remove the entire Docker environment
+destroy () {
+    read -p "This will delete containers, volumes and images. Are you sure? [y/N]: " -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then exit; fi
+    docker-compose down -v --rmi all
+}
+
+# Stop and destroy all containers
+down () {
+    docker-compose down "${@:1}"
+}
+
+# Create .env from .env.example
+env () {
+    if [ ! -f .env ]; then
+        cp .env.example .env
+    fi
+}
+
+# Initialise the Docker environment and the application
+init () {
+    env \
+        && down -v \
+        && build \
+        && docker-compose run --rm --entrypoint="//opt/files/init" backend \
+        && yarn install \
+        && start
+}
+
+# Display and tail the logs of all containers or the specified one's
+logs () {
+    docker-compose logs -f "${@:1}"
+}
+
+# Restart all containers or the specified one
+restart () {
+    docker-compose restart "${@:1}"
+}
+
+# Start the containers
+start () {
+    docker-compose up -d
+}
+
+# Stop the containers
+stop () {
+    docker-compose stop
+}
+
+# Update the Docker environment
+update () {
+    git pull \
+        && build \
+        && composer install \
+        && artisan migrate \
+        && yarn install \
+        && start
+}
+
+# Run a Yarn command
+yarn () {
+    docker-compose run --rm frontend yarn "${@:1}"
+}
+
+
+#######################################
+# MENU
+#######################################
+
+case "$1" in
+    artisan)
+        artisan "${@:2}"
+        ;;
+    build)
+        build "${@:2}"
+        ;;
+    composer)
+        composer "${@:2}"
+        ;;
+    destroy)
+        destroy
+        ;;
+    down)
+        down "${@:2}"
+        ;;
+    init)
+        init
+        ;;
+    logs)
+        logs "${@:2}"
+        ;;
+    restart)
+        restart "${@:2}"
+        ;;
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    update)
+        update
+        ;;
+    yarn)
+        yarn "${@:2}"
+        ;;
+    *)
+        cat << EOF
+
+Command line interface for the Docker-based web development environment demo.
+
+Usage:
+    demo <command> [options] [arguments]
+
+Available commands:
+    artisan ................................... Run an Artisan command
+    build [image] ............................. Build all of the images or the specified one
+    composer .................................. Run a Composer command
+    destroy ................................... Remove the entire Docker environment
+    down [-v] ................................. Stop and destroy all containers
+                                                Options:
+                                                    -v .................... Destroy the volumes as well
+    init ...................................... Initialise the Docker environment and the application
+    logs [container] .......................... Display and tail the logs of all containers or the specified one's
+    restart [container] ....................... Restart all containers or the specified one
+    start ..................................... Start the containers
+    stop ...................................... Stop the containers
+    update .................................... Update the Docker environment
+    yarn ...................................... Run a Yarn command
+
+EOF
+        exit
+        ;;
+esac
