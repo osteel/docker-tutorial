@@ -32,7 +32,6 @@ services:
     working_dir: /var/www/frontend
     volumes:
       - ./src/frontend:/var/www/frontend:delegated
-      - ./.docker/client/vue.config.js:/var/www/vue.config.js:ro
     depends_on:
       - backend
 
