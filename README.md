@@ -33,11 +33,11 @@ Add the following domains to your machine's `hosts` file:
 127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.test
 ```
 
-Clone the repository and change the current directory for the project's root:
+Clone the repository and `checkout` the `part-3` branch:
 
 ```
-$ git clone git@github.com:osteel/docker-tutorial.git
-$ cd docker-tutorial
+$ git clone git@github.com:osteel/docker-tutorial.git && cd docker-tutorial
+$ git checkout part-3
 ```
 
 Copy `.env.example` to `.env`, **both at the root of the project and in `src/backend`**:
