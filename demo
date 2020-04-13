@@ -15,6 +15,26 @@ build () {
     docker-compose build "${@:1}"
 }
 
+# Generate a new certificate
+cert_generate () {
+    rm -Rf .docker/nginx/certs/demo.test.*
+    docker-compose run --rm nginx sh -c "cd /etc/nginx/certs && touch openssl.cnf && cat /etc/ssl/openssl.cnf > openssl.cnf && echo \"\" >> openssl.cnf && echo \"[ SAN ]\" >> openssl.cnf && echo \"subjectAltName=DNS.1:demo.test,DNS.2:*.demo.test\" >> openssl.cnf && openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout demo.test.key -out demo.test.crt -days 3650 -subj \"/CN=*.demo.test\" -config openssl.cnf -extensions SAN && rm openssl.cnf"
+}
+
+# Install the certificate
+cert_install () {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain .docker/nginx/certs/demo.test.crt
+    elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+        sudo ln -s "$(pwd)/.docker/nginx/certs/demo.test.crt" /usr/local/share/ca-certificates/demo.test.crt
+        sudo update-ca-certificates
+    else
+        echo "Could not install the certificate on the host machine, please do it manually"
+    fi
+
+    docker-compose exec backend update-ca-certificates
+}
+
 # Run a Composer command
 composer () {
     docker-compose run --rm backend composer "${@:1}"
@@ -45,8 +65,13 @@ init () {
         && down -v \
         && build \
         && docker-compose run --rm --entrypoint="//opt/files/init" backend \
-        && yarn install \
-        && start
+        && yarn install
+
+    if [ ! -f .docker/nginx/certs/demo.test.crt ]; then
+        cert_generate
+    fi
+
+    start && cert_install
 }
 
 # Display and tail the logs of all containers or the specified one's
@@ -96,6 +121,30 @@ case "$1" in
     build)
         build "${@:2}"
         ;;
+    cert)
+        case "$2" in
+            generate)
+                cert_generate
+                ;;
+            install)
+                cert_install
+                ;;
+            *)
+                cat << EOF
+
+Certificate management commands.
+
+Usage:
+    demo cert <command>
+
+Available commands:
+    generate .................................. Generate a new certificate
+    install ................................... Install the certificate
+
+EOF
+                ;;
+        esac
+        ;;
     composer)
         composer "${@:2}"
         ;;
@@ -137,6 +186,9 @@ Usage:
 Available commands:
     artisan ................................... Run an Artisan command
     build [image] ............................. Build all of the images or the specified one
+    cert ...................................... Certificate management commands
+        generate .............................. Generate a new certificate
+        install ............................... Install the certificate
     composer .................................. Run a Composer command
     destroy ................................... Remove the entire Docker environment
     down [-v] ................................. Stop and destroy all containers

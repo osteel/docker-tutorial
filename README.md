@@ -1,8 +1,8 @@
-# Docker for local web development, part 4: smoothing things out with Bash
+# Docker for local web development, part 5: HTTPS all the things
 
 This repository accompanies a [tutorial series](https://tech.osteel.me/posts/docker-for-local-web-development-why-should-you-care "Docker for local web development, introduction: why should you care?") about leveraging Docker for local web development.
 
-The current branch covers part 4 of the series, which is about using Bash as a layer on top of the Docker setup to make it easier to work with. Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-4-smoothing-things-out-with-bash "Docker for local web development, part 4: smoothing things out with Bash") for a detailed explanation.
+The current branch covers part 5 of the series, which is about adding SSL/TLS to the environment using a self-signed certificate. Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-5-https-all-the-things "Docker for local web development, part 5: HTTPS all the things") for a detailed explanation.
 
 ## Content
 
@@ -23,7 +23,7 @@ The containers are based on Alpine images when available, for an optimised size.
 
 Make sure [Docker Desktop for Mac or PC](https://www.docker.com/products/docker-desktop) is installed and running, or head [over here](https://docs.docker.com/install/) if you are a Linux user. You will also need a terminal running [Git](https://git-scm.com/) and [Bash](https://www.gnu.org/software/bash/).
 
-This setup also uses localhost's port 80, so make sure it is available.
+This setup also uses localhost's ports 80 and 443, so make sure those are available.
 
 ## Directions of use
 
@@ -33,11 +33,11 @@ Add the following domains to your machine's `hosts` file:
 127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.test
 ```
 
-Clone the repository and `checkout` the `part-4` branch:
+Clone the repository and `checkout` the `part-5` branch:
 
 ```
 $ git clone git@github.com:osteel/docker-tutorial.git && cd docker-tutorial
-$ git checkout part-4
+$ git checkout part-5
 ```
 
 Add the following function to your Bash start-up file (`.bashrc`, `.zshrc`...):
@@ -59,7 +59,9 @@ $ demo init
 
 This will download and build the images listed in `docker-compose.yml`, create and start the corresponding containers, and take other various steps to set up the project (this might take a while).
 
-Once the script is done, you can visit [frontend.demo.test](http://frontend.demo.test) and [backend.demo.test](http://backend.demo.test).
+You're also likely to be prompted for your system account's password to install the SSL/TLS self-signed certificate, unless you're on Windows, in which case you'll need to install it [manually](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows) (you will find it under `.docker/nginx/certs`).
+
+Once the script is done, you can visit [frontend.demo.test](https://frontend.demo.test) and [backend.demo.test](https://backend.demo.test).
 
 Learn about the available commands by displaying the menu:
 
@@ -69,11 +71,11 @@ $ demo
 
 ## Explanation
 
-The images used by the setup are listed and configured in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/part-4/docker-compose.yml).
+The images used by the setup are listed and configured in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/part-5/docker-compose.yml).
 
 When building and starting the containers based on the images for the first time, a MySQL database named `demo` is automatically created (you can pick a different name in the MySQL service's description in `docker-compose.yml`).
 
-Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-4/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-4/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-4/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](http://backend.demo.test), [frontend.demo.test](http://frontend.demo.test) and [phpmyadmin.test](http://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
+Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-5/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-5/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-5/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](https://backend.demo.test), [frontend.demo.test](https://frontend.demo.test) and [phpmyadmin.test](https://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
 
 The directories containing the backend and frontend applications are mounted onto both Nginx's and the applications' containers, meaning any update to the code is immediately available upon refreshing the page, without having to rebuild any container.
 
@@ -83,9 +85,11 @@ The frontend application is consuming a simple endpoint from the backend applica
 
 The database data is persisted in its own local directory through the volume `mysqldata`, which is mounted onto MySQL's container.
 
-When running `demo init`, all of the required steps to set up the project (installing dependencies, running database migrations, generating `.env` files, etc.) are automatically handled by a [Bash function](https://github.com/osteel/docker-tutorial/blob/part-4/demo#L42). Since the backend requires some extra steps, a [dedicated script](https://github.com/osteel/docker-tutorial/blob/part-4/.docker/backend/init) is mounted onto and run directly in its container.
+When running `demo init`, all of the required steps to set up the project (installing dependencies, running database migrations, generating `.env` files, etc.) are automatically handled by a [Bash function](https://github.com/osteel/docker-tutorial/blob/part-5/demo#L42). Since the backend requires some extra steps, a [dedicated script](https://github.com/osteel/docker-tutorial/blob/part-5/.docker/backend/init) is mounted onto and run directly in its container.
 
-Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-4-smoothing-things-out-with-bash "Docker for local web development, part 4: smoothing things out with Bash") for a detailed explanation.
+The SSL/TLS certificate is generated using OpenSSL on the Nginx container, and is installed automatically on your local machine unless you are on [Windows](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows). It is also installed on the backend container, which allows it to directly communicate with the frontend container via the `frontend.demo.test` network alias defined for the Nginx service in `docker-compose.yml`.
+
+Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-5-https-all-the-things "Docker for local web development, part 5: HTTPS all the things") for a detailed explanation.
 
 ## Cleaning up
 
