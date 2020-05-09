@@ -25,7 +25,9 @@ services:
 
   # Backend Service
   backend:
-    build: ./src/backend
+    build:
+      context: ./src/backend
+      target: backend
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend:delegated
@@ -33,6 +35,17 @@ services:
       - ./.docker/nginx/certs:/usr/local/share/ca-certificates:delegated,ro
     depends_on:
       - mysql
+
+  # Worker Service
+  worker:
+    build:
+      context: ./src/backend
+      target: worker
+    working_dir: /var/www/backend
+    volumes:
+      - ./src/backend:/var/www/backend:delegated
+    depends_on:
+      - backend
 
   # Frontend Service
   frontend:
@@ -75,9 +88,18 @@ services:
     depends_on:
       - nginx
 
+  # Redis Service
+  redis:
+    image: redis:6-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+
 # Volumes
 volumes:
 
   mysqldata:
 
   phpmyadmindata:
+
+  redisdata:
