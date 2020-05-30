@@ -35,6 +35,7 @@ services:
       - ./.docker/nginx/certs:/usr/local/share/ca-certificates:delegated,ro
     depends_on:
       - mysql
+      - redis
 
   # Worker Service
   worker:
