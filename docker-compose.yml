@@ -96,6 +96,15 @@ services:
     volumes:
       - redisdata:/data
 
+  # Scheduler Service
+  scheduler:
+    image: mcuadros/ofelia:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./.docker/scheduler/config.ini:/etc/ofelia/config.ini
+    depends_on:
+      - backend
+
 # Volumes
 volumes:
 

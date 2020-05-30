@@ -1,8 +1,8 @@
-# Docker for local web development, part 7: using a multi-stage build to introduce a worker
+# Docker for local web development, part 8: scheduled tasks
 
 This repository accompanies a [tutorial series](https://tech.osteel.me/posts/docker-for-local-web-development-why-should-you-care "Docker for local web development, introduction: why should you care?") about leveraging Docker for local web development.
 
-The current branch covers part 7 of the series, which is about adding a worker using a [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) in order to process queued jobs. Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-7-using-a-multi-stage-build-to-introduce-a-worker "Docker for local web development, part 7: using a multi-stage build to introduce a worker") for a detailed explanation.
+The current branch covers part 8 of the series, which is about adding a scheduler to run tasks periodically. Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-8-scheduled-tasks "Docker for local web development, part 8: scheduled tasks") for a detailed explanation.
 
 ## Content
 
@@ -18,6 +18,7 @@ It includes:
 * A container for Redis;
 * A container for phpMyAdmin;
 * A container for Ngrok;
+* A container for Ofelia;
 * A volume to persist MySQL data;
 * A volume to persist Redis data.
 
@@ -37,11 +38,11 @@ Add the following domains to your machine's `hosts` file:
 127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.test
 ```
 
-Clone the repository and `checkout` the `part-7` branch:
+Clone the repository and `checkout` the `part-8` branch:
 
 ```
 $ git clone git@github.com:osteel/docker-tutorial.git && cd docker-tutorial
-$ git checkout part-7
+$ git checkout part-8
 ```
 
 Add the following function to your Bash start-up file (`.bashrc`, `.zshrc`...):
@@ -83,11 +84,11 @@ $ demo restart ngrok
 
 ## Explanation
 
-The images used by the setup are listed and configured in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/part-7/docker-compose.yml).
+The images used by the setup are listed and configured in [`docker-compose.yml`](https://github.com/osteel/docker-tutorial/blob/part-8/docker-compose.yml).
 
 When building and starting the containers based on the images for the first time, a MySQL database named `demo` is automatically created (you can pick a different name in the MySQL service's description in `docker-compose.yml`).
 
-Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-7/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-7/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-7/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](https://backend.demo.test), [frontend.demo.test](https://frontend.demo.test) and [phpmyadmin.test](https://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
+Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](https://backend.demo.test), [frontend.demo.test](https://frontend.demo.test) and [phpmyadmin.test](https://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
 
 The directories containing the backend and frontend applications are mounted onto both Nginx's and the applications' containers, meaning any update to the code is immediately available upon refreshing the page, without having to rebuild any container.
 
@@ -99,17 +100,15 @@ The database data is persisted in its own local directory through the volume `my
 
 The same goes for the data stored into Redis, which is persisted in its own local directory through the volume `redisdata`, mounted onto Redis' container.
 
-When running `demo init`, all of the required steps to set up the project (installing dependencies, running database migrations, generating `.env` files, etc.) are automatically handled by a [Bash function](https://github.com/osteel/docker-tutorial/blob/part-7/demo#L62). Since the backend requires some extra steps, a [dedicated script](https://github.com/osteel/docker-tutorial/blob/part-7/.docker/backend/init) is mounted onto and run directly in its container.
+When running `demo init`, all of the required steps to set up the project (installing dependencies, running database migrations, generating `.env` files, etc.) are automatically handled by a [Bash function](https://github.com/osteel/docker-tutorial/blob/part-8/demo#L62). Since the backend requires some extra steps, a [dedicated script](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/backend/init) is mounted onto and run directly in its container.
 
 The SSL/TLS certificate is generated using OpenSSL on the Nginx container, and is installed automatically on your local machine unless you are on [Windows](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows). It is also installed on the backend container, which allows it to directly communicate with the frontend container via the `frontend.demo.test` network alias defined for the Nginx service in `docker-compose.yml`.
 
-Both the worker and backend services are based on the backend's [Dockerfile](https://github.com/osteel/docker-tutorial/blob/part-7/src/backend/Dockerfile), in two separate stages. The worker is automatically started and will process any queued jobs – to see it in action, manually run Laravel's scheduler:
+Both the worker and backend services are based on the backend's [Dockerfile](https://github.com/osteel/docker-tutorial/blob/part-8/src/backend/Dockerfile), in two separate stages. The worker is automatically started and will process any queued jobs.
 
-```
-$ demo artisan schedule:run
-```
+Finally, scheduled tasks are handled by [Ofelia](https://hub.docker.com/r/mcuadros/ofelia), a job scheduler for Docker environments. The tasks are listed in the [config.ini](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/scheduler/config.ini) file, which is mounted onto the scheduler's container. One task is already configured – Laravel's [scheduler](https://laravel.com/docs/scheduling), meaning you don't need to set up a cron entry.
 
-Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-7-using-a-multi-stage-build-to-introduce-a-worker "Docker for local web development, part 7: using a multi-stage build to introduce a worker") for a detailed explanation.
+Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local-web-development-part-8-scheduled-tasks "Docker for local web development, part 8: scheduled tasks") for a detailed explanation.
 
 ## Cleaning up
 
