@@ -54,9 +54,9 @@ logs () {
     docker-compose logs -f "${@:1}"
 }
 
-# Restart all containers or the specified one
+# Restart the containers
 restart () {
-    docker-compose restart "${@:1}"
+    docker-compose stop && docker-compose start
 }
 
 # Start the containers
@@ -112,7 +112,7 @@ case "$1" in
         logs "${@:2}"
         ;;
     restart)
-        restart "${@:2}"
+        restart
         ;;
     start)
         start
@@ -144,7 +144,7 @@ Available commands:
                                                     -v .................... Destroy the volumes as well
     init ...................................... Initialise the Docker environment and the application
     logs [container] .......................... Display and tail the logs of all containers or the specified one's
-    restart [container] ....................... Restart all containers or the specified one
+    restart ................................... Restart the containers
     start ..................................... Start the containers
     stop ...................................... Stop the containers
     update .................................... Update the Docker environment
