@@ -40,21 +40,35 @@ $ git clone git@github.com:osteel/docker-tutorial.git && cd docker-tutorial
 $ git checkout part-3
 ```
 
-Copy `.env.example` to `.env`, **both at the root of the project and in `src/backend`**:
+**The rest of the commands are to be run from the root of the project.**
+
+Copy `.env.example` to `.env`, both at the root of the project and in `src/backend`:
 
 ```
-$ cp .env.example .env
+$ cp .env.example .env && cd src/backend && cp .env.example .env && cd ../..
 ```
 
-Run the following command from the root of the project:
+The following commands may take a little bit of time, as some Docker images might need downloading.
+
+Install the backend dependencies:
+
+```
+$ docker-compose run --rm backend composer install
+```
+
+Install the frontend dependencies:
+
+```
+$ docker-compose run --rm frontend yarn install
+```
+
+Start the project:
 
 ```
 $ docker-compose up -d
 ```
 
-This may take a little bit of time, as some Docker images might need downloading.
-
-Once the script is done, generate the Laravel application's key:
+Once the project is started, generate the Laravel application's key:
 
 ```
 $ docker-compose exec backend php artisan key:generate
@@ -62,7 +76,7 @@ $ docker-compose exec backend php artisan key:generate
 
 You can now visit [frontend.demo.test](http://frontend.demo.test) and [backend.demo.test](http://backend.demo.test).
 
-Yarn, Artisan and Composer are available on the containers directly:
+Yarn, Artisan and Composer are now directly available from the running containers:
 
 ```
 $ docker-compose exec frontend yarn
