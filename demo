@@ -81,7 +81,7 @@ logs () {
 
 # Restart the containers
 restart () {
-    docker-compose stop && docker-compose start
+    stop && start
 }
 
 # Start the containers
