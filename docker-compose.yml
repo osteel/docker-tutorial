@@ -11,7 +11,7 @@ services:
     volumes:
       - ./src/backend:/var/www/backend:ro,delegated
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      - phpmyadmindata:/usr/src/phpmyadmin:delegated
+      - phpmyadmindata:/var/www/phpmyadmin:ro,delegated
     depends_on:
       - backend
       - frontend
@@ -51,7 +51,7 @@ services:
     environment:
       PMA_HOST: mysql
     volumes:
-      - phpmyadmindata:/usr/src/phpmyadmin:delegated
+      - phpmyadmindata:/var/www/html:delegated
     depends_on:
       - mysql
 
