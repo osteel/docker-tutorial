@@ -128,8 +128,8 @@ To destroy the containers and the associated volumes:
 $ docker-compose down -v
 ```
 
-To remove everything, including the images:
+To remove everything, including images and orphan containers:
 
 ```
-$ docker-compose down -v --rmi all
+$ docker-compose down -v --rmi all --remove-orphans
 ```
