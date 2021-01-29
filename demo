@@ -44,7 +44,7 @@ composer () {
 destroy () {
     read -p "This will delete containers, volumes and images. Are you sure? [y/N]: " -r
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then exit; fi
-    docker-compose down -v --rmi all
+    docker-compose down -v --rmi all --remove-orphans
 }
 
 # Stop and destroy all containers
