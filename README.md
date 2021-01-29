@@ -131,7 +131,7 @@ To destroy the containers and the associated volumes:
 $ demo down -v
 ```
 
-To remove everything, including the images:
+To remove everything, including images and orphans containers:
 
 ```
 $ demo destroy
