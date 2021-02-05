@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.0-fpm-alpine
 
 # Install extensions
 RUN docker-php-ext-install pdo_mysql bcmath
