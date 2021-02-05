@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine as backend
+FROM php:8.0-fpm-alpine as backend
 
 # Import extension installer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
