@@ -9,9 +9,9 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./src/backend:/var/www/backend:ro,delegated
-      - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      - phpmyadmindata:/var/www/phpmyadmin:ro,delegated
+      - ./src/backend:/var/www/backend
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - phpmyadmindata:/var/www/phpmyadmin
     depends_on:
       - backend
       - frontend
@@ -22,8 +22,8 @@ services:
     build: ./src/backend
     working_dir: /var/www/backend
     volumes:
-      - ./src/backend:/var/www/backend:delegated
-      - ./.docker/backend/init:/opt/files/init:delegated,ro
+      - ./src/backend:/var/www/backend
+      - ./.docker/backend/init:/opt/files/init
     depends_on:
       - mysql
 
@@ -32,7 +32,7 @@ services:
     build: ./src/frontend
     working_dir: /var/www/frontend
     volumes:
-      - ./src/frontend:/var/www/frontend:delegated
+      - ./src/frontend:/var/www/frontend
     depends_on:
       - backend
 
@@ -43,8 +43,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: demo
     volumes:
-      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - mysqldata:/var/lib/mysql:delegated
+      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - mysqldata:/var/lib/mysql
 
   # PhpMyAdmin Service
   phpmyadmin:
@@ -52,7 +52,7 @@ services:
     environment:
       PMA_HOST: mysql
     volumes:
-      - phpmyadmindata:/var/www/html:delegated
+      - phpmyadmindata:/var/www/html
     depends_on:
       - mysql
 
