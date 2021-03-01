@@ -14,10 +14,10 @@ services:
         aliases:
           - frontend.demo.test
     volumes:
-      - ./src/backend:/var/www/backend:ro,delegated
-      - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      - phpmyadmindata:/var/www/phpmyadmin:ro,delegated
-      - ./.docker/nginx/certs:/etc/nginx/certs:delegated
+      - ./src/backend:/var/www/backend
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - phpmyadmindata:/var/www/phpmyadmin
+      - ./.docker/nginx/certs:/etc/nginx/certs
     depends_on:
       - backend
       - frontend
@@ -30,9 +30,9 @@ services:
       target: backend
     working_dir: /var/www/backend
     volumes:
-      - ./src/backend:/var/www/backend:delegated
-      - ./.docker/backend/init:/opt/files/init:delegated,ro
-      - ./.docker/nginx/certs:/usr/local/share/ca-certificates:delegated,ro
+      - ./src/backend:/var/www/backend
+      - ./.docker/backend/init:/opt/files/init
+      - ./.docker/nginx/certs:/usr/local/share/ca-certificates
     depends_on:
       - mysql
       - redis
@@ -44,7 +44,7 @@ services:
       target: worker
     working_dir: /var/www/backend
     volumes:
-      - ./src/backend:/var/www/backend:delegated
+      - ./src/backend:/var/www/backend
     depends_on:
       - backend
 
@@ -53,7 +53,7 @@ services:
     build: ./src/frontend
     working_dir: /var/www/frontend
     volumes:
-      - ./src/frontend:/var/www/frontend:delegated
+      - ./src/frontend:/var/www/frontend
     depends_on:
       - backend
 
@@ -64,8 +64,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: demo
     volumes:
-      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - mysqldata:/var/lib/mysql:delegated
+      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - mysqldata:/var/lib/mysql
 
   # PhpMyAdmin Service
   phpmyadmin:
@@ -73,7 +73,7 @@ services:
     environment:
       PMA_HOST: mysql
     volumes:
-      - phpmyadmindata:/var/www/html:delegated
+      - phpmyadmindata:/var/www/html
     depends_on:
       - mysql
 
