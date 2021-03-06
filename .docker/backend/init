@@ -32,18 +32,5 @@ EOF
     php "/var/www/backend/artisan" key:generate --ansi
 fi
 
-# Make sure the MySQL database is available
-echo 'Waiting for MySQL to be available'
-count=1
-while [ $count -le 10 ] && ! mysql -uroot -proot -hmysql -P3306 -e 'exit' ; do
-    sleep 5
-    ((count++))
-done
-if [ "$count" -ge 10 ]; then
-    echo >&2 'error: failed to connect to MySQL after 10 attempts'
-    exit 1
-fi
-echo 'MySQL connection successful!'
-
 # Database
 php "/var/www/backend/artisan" migrate

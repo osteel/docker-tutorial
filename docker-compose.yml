@@ -32,7 +32,8 @@ services:
       - ./.docker/backend/init:/opt/files/init
       - ./.docker/nginx/certs:/usr/local/share/ca-certificates
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   # Frontend Service
   frontend:
@@ -52,6 +53,10 @@ services:
     volumes:
       - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      retries: 10
 
   # PhpMyAdmin Service
   phpmyadmin:
@@ -61,7 +66,8 @@ services:
     volumes:
       - phpmyadmindata:/var/www/html
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   # Ngrok Service
   ngrok:
