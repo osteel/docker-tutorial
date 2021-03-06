@@ -21,7 +21,8 @@ services:
     volumes:
       - ./src:/var/www/php
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   # MySQL Service
   mysql:
@@ -32,6 +33,10 @@ services:
     volumes:
       - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      retries: 10
 
   # PhpMyAdmin Service
   phpmyadmin:
@@ -41,7 +46,8 @@ services:
     environment:
       PMA_HOST: mysql
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
 # Volumes
 volumes:
