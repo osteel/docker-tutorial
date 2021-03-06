@@ -51,7 +51,7 @@ $ docker-compose up -d
 
 This may take a little bit of time, as some Docker images might need downloading.
 
-Once the script is done, visit [php.test](http://php.test) (you might initially get a MySQL error message: this is because the database is still being created; the error will soon disappear upon refreshing the page).
+Once the script is done, visit [php.test](http://php.test).
 
 ## Explanation
 
