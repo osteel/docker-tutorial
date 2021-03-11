@@ -30,7 +30,7 @@ This setup also uses localhost's port 80, so make sure it is available.
 Add the following domains to your machine's `hosts` file:
 
 ```
-127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.test
+127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.demo.test
 ```
 
 Clone the repository and `checkout` the `part-3` branch:
