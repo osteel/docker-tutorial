@@ -35,7 +35,7 @@ This setup also uses localhost's ports 80 and 443, so make sure those are availa
 Add the following domains to your machine's `hosts` file:
 
 ```
-127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.test
+127.0.0.1 backend.demo.test frontend.demo.test phpmyadmin.demo.test
 ```
 
 Clone the repository and `checkout` the `part-8` branch:
@@ -88,7 +88,7 @@ The images used by the setup are listed and configured in [`docker-compose.yml`]
 
 When building and starting the containers based on the images for the first time, a MySQL database named `demo` is automatically created (you can pick a different name in the MySQL service's description in `docker-compose.yml`).
 
-Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](https://backend.demo.test), [frontend.demo.test](https://frontend.demo.test) and [phpmyadmin.test](https://phpmyadmin.test) respectively (the database credentials are *root* / *root*).
+Minimalist Nginx configurations for the [backend application](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/backend.conf), the [frontend application](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/frontend.conf) and [phpMyAdmin](https://github.com/osteel/docker-tutorial/blob/part-8/.docker/nginx/conf.d/phpmyadmin.conf) are also copied over to Nginx's container, making them available at [backend.demo.test](https://backend.demo.test), [frontend.demo.test](https://frontend.demo.test) and [phpmyadmin.demo.test](https://phpmyadmin.demo.test) respectively (the database credentials are *root* / *root*).
 
 The directories containing the backend and frontend applications are mounted onto both Nginx's and the applications' containers, meaning any update to the code is immediately available upon refreshing the page, without having to rebuild any container.
 
