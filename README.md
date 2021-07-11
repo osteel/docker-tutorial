@@ -53,25 +53,25 @@ The following commands may take a little bit of time, as some Docker images migh
 Install the backend dependencies:
 
 ```
-$ docker-compose run --rm backend composer install
+$ docker compose run --rm backend composer install
 ```
 
 Install the frontend dependencies:
 
 ```
-$ docker-compose run --rm frontend yarn install
+$ docker compose run --rm frontend yarn install
 ```
 
 Start the project:
 
 ```
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 Once the project is started, generate the Laravel application's key:
 
 ```
-$ docker-compose exec backend php artisan key:generate
+$ docker compose exec backend php artisan key:generate
 ```
 
 You can now visit [frontend.demo.test](http://frontend.demo.test) and [backend.demo.test](http://backend.demo.test).
@@ -79,15 +79,15 @@ You can now visit [frontend.demo.test](http://frontend.demo.test) and [backend.d
 Yarn, Artisan and Composer are now directly available from the running containers:
 
 ```
-$ docker-compose exec frontend yarn
-$ docker-compose exec backend php artisan
-$ docker-compose exec backend composer
+$ docker compose exec frontend yarn
+$ docker compose exec backend php artisan
+$ docker compose exec backend composer
 ```
 
 For example, you could run Laravel's default database migrations to confirm the MySQL connection is working:
 
 ```
-$ docker-compose exec backend php artisan migrate
+$ docker compose exec backend php artisan migrate
 ```
 
 ## Explanation
@@ -113,23 +113,23 @@ Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local
 To stop the containers:
 
 ```
-$ docker-compose stop
+$ docker compose stop
 ```
 
 To destroy the containers:
 
 ```
-$ docker-compose down
+$ docker compose down
 ```
 
 To destroy the containers and the associated volumes:
 
 ```
-$ docker-compose down -v
+$ docker compose down -v
 ```
 
 To remove everything, including images and orphan containers:
 
 ```
-$ docker-compose down -v --rmi all --remove-orphans
+$ docker compose down -v --rmi all --remove-orphans
 ```
