@@ -46,7 +46,7 @@ $ cp .env.example .env
 Run the following command:
 
 ```
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 This may take a little bit of time, as some Docker images might need downloading.
@@ -72,23 +72,23 @@ Please refer to the [full article](https://tech.osteel.me/posts/docker-for-local
 To stop the containers:
 
 ```
-$ docker-compose stop
+$ docker compose stop
 ```
 
 To destroy the containers:
 
 ```
-$ docker-compose down
+$ docker compose down
 ```
 
 To destroy the containers and the associated volumes:
 
 ```
-$ docker-compose down -v
+$ docker compose down -v
 ```
 
 To remove everything, including images and orphan containers:
 
 ```
-$ docker-compose down -v --rmi all --remove-orphans
+$ docker compose down -v --rmi all --remove-orphans
 ```
