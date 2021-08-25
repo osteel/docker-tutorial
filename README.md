@@ -48,6 +48,18 @@ Copy `.env.example` to `.env`, both at the root of the project and in `src/backe
 $ cp .env.example .env && cd src/backend && cp .env.example .env && cd ../..
 ```
 
+To ensure compatibility across operating systems, specify your system's current user ID in the newly created `.env` at the root of the project, e.g.:
+
+```
+UID=501
+```
+
+You can obtain that ID by running the following command in a terminal:
+
+```
+$ id -u
+```
+
 The following commands may take a little bit of time, as some Docker images might need downloading.
 
 Install the backend dependencies:
