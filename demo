@@ -32,7 +32,7 @@ cert_install () {
         echo "Could not install the certificate on the host machine, please do it manually"
     fi
 
-    docker compose exec backend update-ca-certificates
+    docker compose exec -u root backend update-ca-certificates
 }
 
 # Run a Composer command
