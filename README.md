@@ -47,7 +47,7 @@ $ git checkout part-8
 
 Add the following function to your Bash start-up file (`.bashrc`, `.zshrc`...):
 
-```
+```bash
 function demo {
     cd <PATH>/docker-tutorial && bash demo $*
         cd -
@@ -55,6 +55,12 @@ function demo {
 ```
 
 Where `<PATH>` is the absolute path leading to the folder where the repository was cloned.
+
+To ensure compatibility across operating systems, you will also need to export the system's current user ID. Add this line to the same file:
+
+```bash
+export UID=$(id -u)
+```
 
 Open a new terminal window or `source` your Bash start-up file for the changes to take effect, then run the following command:
 

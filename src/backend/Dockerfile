@@ -18,6 +18,13 @@ RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 # Install extra packages
 RUN apk --no-cache add bash mysql-client mariadb-connector-c-dev
 
+# Create user based on provided user ID
+ARG UID
+RUN adduser --disabled-password --gecos "" --uid $UID demo
+
+# Switch to that user
+USER demo
+
 
 FROM backend as worker
 
