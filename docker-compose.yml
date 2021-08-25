@@ -25,7 +25,10 @@ services:
 
   # Backend Service
   backend:
-    build: ./src/backend
+    build:
+      context: ./src/backend
+      args:
+        UID: $UID
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend
