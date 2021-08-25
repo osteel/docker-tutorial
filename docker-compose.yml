@@ -28,6 +28,8 @@ services:
     build:
       context: ./src/backend
       target: backend
+      args:
+        UID: $UID
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend
@@ -44,6 +46,8 @@ services:
     build:
       context: ./src/backend
       target: worker
+      args:
+        UID: $UID
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend
