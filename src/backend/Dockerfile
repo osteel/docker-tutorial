@@ -13,8 +13,8 @@ COPY .docker/php.ini $PHP_INI_DIR/conf.d/opcache.ini
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
 # Create user based on provided user ID
-ARG UID
-RUN adduser --disabled-password --gecos "" --uid $UID demo
+ARG HOST_UID
+RUN adduser --disabled-password --gecos "" --uid $HOST_UID demo
 
 # Switch to that user
 USER demo

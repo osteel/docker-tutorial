@@ -51,7 +51,7 @@ $ cp .env.example .env && cd src/backend && cp .env.example .env && cd ../..
 To ensure compatibility across operating systems, specify your system's current user ID in the newly created `.env` at the root of the project, e.g.:
 
 ```
-UID=501
+HOST_UID=501
 ```
 
 You can obtain that ID by running the following command in a terminal:
