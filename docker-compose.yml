@@ -29,7 +29,7 @@ services:
       context: ./src/backend
       target: backend
       args:
-        UID: $UID
+        HOST_UID: $HOST_UID
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend
@@ -47,7 +47,7 @@ services:
       context: ./src/backend
       target: worker
       args:
-        UID: $UID
+        HOST_UID: $HOST_UID
     working_dir: /var/www/backend
     volumes:
       - ./src/backend:/var/www/backend
