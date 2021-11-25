@@ -65,9 +65,10 @@ services:
 
   # MySQL Service
   mysql:
-    image: mysql:8
+    image: mysql/mysql-server:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: demo
     volumes:
       - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
