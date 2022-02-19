@@ -1,4 +1,4 @@
-FROM node:15-alpine
+FROM node:17-alpine
 
 # Start application
-CMD ["yarn", "serve"]
+CMD ["yarn", "dev"]
