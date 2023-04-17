@@ -48,7 +48,7 @@ services:
       MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: demo
     volumes:
-      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
       - mysqldata:/var/lib/mysql
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
